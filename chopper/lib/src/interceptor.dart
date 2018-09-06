@@ -40,7 +40,11 @@ class BodyConverterCodec extends Converter {
       return request;
     }
     print("request is  " + codec.encode(request.body));
-
+    // check content- type
+    String contentType = request.headers.values.toList()[0];
+    if (contentType == "application/x-www-form-urlencoded") {
+      return request.replace(body: request.body);
+    }
     return request.replace(body: codec.encode(request.body));
   }
 
@@ -49,8 +53,8 @@ class BodyConverterCodec extends Converter {
       return response;
     }
     Map<String, dynamic> decoder = codec.decode(response.base.body);
-    print( json.encode(decoder));
-    return response.replace(body:  response.base.body);
+    print(json.encode(decoder));
+    return response.replace(body: response.base.body);
   }
 }
 
